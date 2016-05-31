@@ -278,6 +278,14 @@ type NativeAppSettings struct {
 	IosAppDownloadLink     *string
 }
 
+type SampleAppSettings struct {
+	Enable         *bool
+	AppUrl         *string
+	IconUrl        *string
+	AppName        *string
+	AppDisplayName *string
+}
+
 type Config struct {
 	ServiceSettings      ServiceSettings
 	TeamSettings         TeamSettings
@@ -297,6 +305,7 @@ type Config struct {
 	LocalizationSettings LocalizationSettings
 	SamlSettings         SamlSettings
 	NativeAppSettings    NativeAppSettings
+	SampleAppSettings    SampleAppSettings
 }
 
 func (o *Config) ToJson() string {
@@ -830,6 +839,29 @@ func (o *Config) SetDefaults() {
 	if o.NativeAppSettings.IosAppDownloadLink == nil {
 		o.NativeAppSettings.IosAppDownloadLink = new(string)
 		*o.NativeAppSettings.IosAppDownloadLink = "https://about.mattermost.com/mattermost-ios-app/"
+	}
+
+	if o.SampleAppSettings.Enable == nil {
+		o.SampleAppSettings.Enable = new(bool)
+		*o.SampleAppSettings.Enable = false
+	}
+
+	if !IsSafeLink(o.SampleAppSettings.AppUrl) {
+		*o.SampleAppSettings.AppUrl = ""
+	}
+
+	if !IsSafeLink(o.SampleAppSettings.IconUrl) {
+		*o.SampleAppSettings.IconUrl = ""
+	}
+
+	if o.SampleAppSettings.AppName == nil {
+		o.SampleAppSettings.AppName = new(string)
+		*o.SampleAppSettings.AppName = ""
+	}
+
+	if o.SampleAppSettings.AppDisplayName == nil {
+		o.SampleAppSettings.AppDisplayName = new(string)
+		*o.SampleAppSettings.AppDisplayName = ""
 	}
 }
 
